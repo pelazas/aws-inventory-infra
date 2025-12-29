@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-west-3" # O tu región preferida
+  region = var.region
 }
 
 # 1. VPC
@@ -59,6 +59,13 @@ module "ecs" {
   alb_target_group_arn = module.alb.target_group_arn
   
   app_count = 1
+
+  aws_region      = var.region
+  db_host         = module.rds.db_address
+  db_name         = module.rds.db_name
+  db_user         = module.rds.db_username
+  db_password_arn = module.rds.db_password_secret_arn
+  s3_bucket_name  = aws_s3_bucket.app_assets.bucket
 }
 
 # 7. STORAGE (S3)
